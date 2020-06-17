@@ -2,6 +2,7 @@ package com.lqs.kuaishou.kuaishou1801;
 
 import android.app.Application;
 
+import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -20,5 +21,7 @@ public class KsApplication extends Application {
             //https://www.liaohuqiu.net/cn/posts/leak-canary-read-me/
             refWatcher = LeakCanary.install(this);
         }
+
+        KsUserManager.getInstance().init(this);
     }
 }

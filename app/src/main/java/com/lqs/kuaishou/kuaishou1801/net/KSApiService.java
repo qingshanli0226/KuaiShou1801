@@ -27,4 +27,8 @@ public interface KSApiService {
     @POST("register")
     @FormUrlEncoded
     Observable<RegisterBean> register(@FieldMap HashMap<String,String> params);
+
+    @POST("autoLogin")
+    @FormUrlEncoded
+    Observable<LoginBean> autoLogin(@FieldMap HashMap<String,String> params);
 }

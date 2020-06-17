@@ -5,10 +5,12 @@ import android.widget.EditText;
 
 import com.lqs.kuaishou.kuaishou1801.R;
 import com.lqs.kuaishou.kuaishou1801.base.BaseMVPFragment;
+import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
 import com.lqs.kuaishou.kuaishou1801.home.MainActivity;
 import com.lqs.kuaishou.kuaishou1801.login.contract.LoginContract;
 import com.lqs.kuaishou.kuaishou1801.login.mode.LoginBean;
 import com.lqs.kuaishou.kuaishou1801.login.presenter.LoginPresenterImpl;
+import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
 
 public class LoginFragment extends BaseMVPFragment<LoginPresenterImpl, LoginContract.ILoginView>
         implements LoginContract.ILoginView, View.OnClickListener,LoginRegisterActivity.INameInterface {
@@ -73,11 +75,16 @@ public class LoginFragment extends BaseMVPFragment<LoginPresenterImpl, LoginCont
         showMessage("登录成功");
         //实现跳转到MainActivity，显示HomeFragment,Activity的启动模式问题.
         getActivity().finish();//是不是一定能回到MainActivity，这个不一定，因为，MainActivity有可能被系统回收.
-        //launchActivity(MainActivity.class, null);
+        KsUserManager.getInstance().setLoginBean(loginBean);//登录成功后，将登录返回的数据存储到manger中
+        launchActivity(MainActivity.class, null);
     }
 
     @Override
     public void showError(String code, String message) {
+        if (code.equals(KSConstant.USER_NOT_REGISTER_ERROR)) {
+            switchRegisterFragment();
+        }
+        showMessage(code + ":" + message);
 
     }
 
