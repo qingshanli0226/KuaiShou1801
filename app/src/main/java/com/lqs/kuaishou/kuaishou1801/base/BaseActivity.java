@@ -22,10 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
 
         initView();
-        initData();
-
         TAG = "LQS:" + getClass().getSimpleName();
-        printLog("onCreate..............");
 
     }
 

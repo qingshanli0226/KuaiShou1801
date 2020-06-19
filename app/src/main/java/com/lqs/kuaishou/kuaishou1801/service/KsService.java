@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
+import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessageBean;
 import com.lqs.kuaishou.kuaishou1801.login.mode.LoginBean;
 import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
 import com.lqs.kuaishou.kuaishou1801.net.RetroCreator;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,6 +49,36 @@ public class KsService extends Service {
                     public void onNext(LoginBean loginBean) {
                         if (loginBean.getCode().equals("200")) {
                             KsUserManager.getInstance().setLoginBean(loginBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void getKsMessage() {
+        RetroCreator.getKSApiServie().getKsMessage()
+                .delay(5,TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<KsMessageBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(KsMessageBean ksMessageBean) {
+                        if (ksMessageBean.getCode() == 200) {
+                            CacheManager.getInstance().saveKsMessage(ksMessageBean);
                         }
                     }
 

@@ -1,6 +1,8 @@
 package com.lqs.kuaishou.kuaishou1801.net;
 
+import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessageBean;
 import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;
+import com.lqs.kuaishou.kuaishou1801.home.mode.LogoutBean;
 import com.lqs.kuaishou.kuaishou1801.login.mode.LoginBean;
 import com.lqs.kuaishou.kuaishou1801.login.mode.RegisterBean;
 
@@ -31,4 +33,10 @@ public interface KSApiService {
     @POST("autoLogin")
     @FormUrlEncoded
     Observable<LoginBean> autoLogin(@FieldMap HashMap<String,String> params);
+
+    @POST("logout")
+    Observable<LogoutBean> logout();
+
+    @GET("getSecurityMessage")
+    Observable<KsMessageBean> getKsMessage();
 }

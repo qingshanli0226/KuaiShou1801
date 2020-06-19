@@ -82,6 +82,20 @@ public class KsUserManager {
         editor.commit();//注意提交
     }
 
+    //用户退出登录时调用，该函数处理缓存,会将用户登录后存储的缓存清空
+    public void processLogout() {
+        this.loginBean = null;//内存登录状态变为未登录
+        editor.putString(tokenName, "");
+        editor.commit();
+
+        //去通知各个页面当前用户已退出登录
+        if (loginStatusChangeListeners.size()>0) {
+            for(ILoginStatusChangeListener listener:loginStatusChangeListeners) {
+                listener.onLogoutSuccess();
+            }
+        }
+    }
+
     public String getToken() {
         return sharedPreferences.getString(tokenName, "");
     }
@@ -108,6 +122,14 @@ public class KsUserManager {
     public interface ILoginStatusChangeListener{
         void onLoginSuccess(LoginBean loginBean);
         void onLogoutSuccess();
+    }
+
+    public String getUserName() {
+        return loginBean.getResult().getName();
+    }
+
+    public String getUserAvatar() {
+        return (String) loginBean.getResult().getAvatar();
     }
 
 

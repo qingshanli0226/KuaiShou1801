@@ -4,6 +4,8 @@ public class KSConstant {
 
     public static String BASE_URL = "http://49.233.93.155:8080/";
 
+    public static String BASE_RESOURCE_URL = BASE_URL+"atguigu";
+
 
     public static final String JSCON_ERROR_CODE = "10000";
     public static final String JSON_ERROR_MESSAGE = "服务端范湖数据解析错误";

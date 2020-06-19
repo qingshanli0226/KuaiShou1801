@@ -3,6 +3,7 @@ package com.lqs.kuaishou.kuaishou1801.home.view;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lqs.kuaishou.kuaishou1801.R;
 import com.lqs.kuaishou.kuaishou1801.base.BaseRVAdapter;
 import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;

@@ -6,9 +6,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import com.lqs.kuaishou.kuaishou1801.R;
 import com.lqs.kuaishou.kuaishou1801.base.BaseMVPFragment;
 import com.lqs.kuaishou.kuaishou1801.base.BaseRVAdapter;
+import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
 import com.lqs.kuaishou.kuaishou1801.home.contract.HomeContract;
 import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;
 import com.lqs.kuaishou.kuaishou1801.home.presenter.HomePresenterImpl;
+import com.lqs.kuaishou.kuaishou1801.player.PlayerActivity;
 
 public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContract.IHomeView> implements HomeContract.IHomeView, BaseRVAdapter.IRecyclerViewItemClickListener {
     private RecyclerView homeRv;
@@ -68,5 +70,9 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
     @Override
     public void onItemClick(int position) {
         showMessage("你点击了第" + position + "个位置");
+
+        String videoUrl = KSConstant.BASE_RESOURCE_URL+homeAdapter.getItemData(position).getVedioUrl();
+        printLog(videoUrl);
+        PlayerActivity.launch(getActivity(), videoUrl);
     }
 }

@@ -2,6 +2,7 @@ package com.lqs.kuaishou.kuaishou1801;
 
 import android.app.Application;
 
+import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -23,5 +24,7 @@ public class KsApplication extends Application {
         }
 
         KsUserManager.getInstance().init(this);
+        CacheManager.getInstance().init(this);
+
     }
 }

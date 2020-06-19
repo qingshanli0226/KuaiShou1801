@@ -1,5 +1,7 @@
 package com.lqs.kuaishou.kuaishou1801.net;
 
+import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -13,7 +15,7 @@ public class TokenInterceptor implements Interceptor {
 
         Request request = chain.request();
 
-        Request newRequest = request.newBuilder().addHeader("version:", "1.0").build();
+        Request newRequest = request.newBuilder().addHeader("token", KsUserManager.getInstance().getToken()).build();
 
         return chain.proceed(newRequest);
     }
