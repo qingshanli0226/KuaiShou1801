@@ -140,5 +140,6 @@ public class LoginBean {
         public void setToken(String token) {
             this.token = token;
         }
+
     }
 }

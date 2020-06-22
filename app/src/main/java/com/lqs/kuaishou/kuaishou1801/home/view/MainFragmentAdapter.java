@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class MainFragmentAdapter extends FragmentStatePagerAdapter {
-    private Fragment[] fragments = new Fragment[] {new HomeFragment()};
-    private String[] titles = new String[]{"发现"};
+    private Fragment[] fragments = new Fragment[] {new FocusFragment(),new HomeFragment(),new CityFragment()};
+    private String[] titles = new String[]{"关注","发现","同城"};
 
     public MainFragmentAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);

@@ -10,28 +10,28 @@ import com.lqs.kuaishou.kuaishou1801.base.BaseRVAdapter;
 import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.HistoryEntity;
 import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
-import com.lqs.kuaishou.kuaishou1801.home.contract.HomeContract;
-import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;
-import com.lqs.kuaishou.kuaishou1801.home.presenter.HomePresenterImpl;
+import com.lqs.kuaishou.kuaishou1801.home.contract.FocusContract;
+import com.lqs.kuaishou.kuaishou1801.home.mode.FocusBean;
+import com.lqs.kuaishou.kuaishou1801.home.presenter.FocusPresenterImpl;
 import com.lqs.kuaishou.kuaishou1801.player.view.GsyPlayerActivity;
 
-public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContract.IHomeView> implements HomeContract.IHomeView, BaseRVAdapter.IRecyclerViewItemClickListener {
-    private RecyclerView homeRv;
-    private HomeAdapter homeAdapter;
+public class FocusFragment extends BaseMVPFragment<FocusPresenterImpl, FocusContract.IFocusView> implements FocusContract.IFocusView, BaseRVAdapter.IRecyclerViewItemClickListener {
+    private RecyclerView focusRv;
+    private FocusAdapter focusAdapter;
 
     @Override
     protected void initHttpData() {
-        ihttpPresenter.getHomeData();
+        ihttpPresenter.getFocusData();
     }
 
     @Override
     protected void initPresenter() {
-        ihttpPresenter = new HomePresenterImpl();
+        ihttpPresenter = new FocusPresenterImpl();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_focus;
     }
 
     @Override
@@ -41,18 +41,18 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
 
     @Override
     protected void initView() {
-        homeRv = findViewById(R.id.rv);
-        homeRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        homeAdapter = new HomeAdapter();
-        homeAdapter.setiRecyclerViewItemClickListener(this);
-        homeRv.setAdapter(homeAdapter);
+        focusRv = findViewById(R.id.rv);
+        focusRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        focusAdapter = new FocusAdapter();
+        focusAdapter.setiRecyclerViewItemClickListener(this);
+        focusRv.setAdapter(focusAdapter);
     }
 
     //返回网络请求数据
     @Override
-    public void onHomeData(HomeBean homeBean) {
-        printLog("获取到首页数据");
-        homeAdapter.updataData(homeBean.getResult());
+    public void onFocusData(FocusBean focusBean) {
+        printLog("获取到关注数据");
+        focusAdapter.updataData(focusBean.getResult());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
     @Override
     public void onItemClick(int position) {
         showMessage("你点击了第" + position + "个位置");
-        String videoUrl = KSConstant.BASE_RESOURCE_URL+homeAdapter.getItemData(position).getVedioUrl();
+        String videoUrl = KSConstant.BASE_RESOURCE_URL+ focusAdapter.getItemData(position).getVedioUrl();
         printLog(videoUrl);
 
         Bundle bundle = new Bundle();
@@ -83,12 +83,11 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
         //添加一条历史记录
         HistoryEntity historyEntity = new HistoryEntity();
         historyEntity.setTime(System.currentTimeMillis());
-        historyEntity.setImageUrl(homeAdapter.getItemData(position).getCoverImg());
-        historyEntity.setVideoUrl(homeAdapter.getItemData(position).getVedioUrl());
-        historyEntity.setUserId(String.valueOf(homeAdapter.getItemData(position).getUserId()));
+        historyEntity.setImageUrl(focusAdapter.getItemData(position).getCoverImg());
+        historyEntity.setVideoUrl(focusAdapter.getItemData(position).getVedioUrl());
+        historyEntity.setUserId(String.valueOf(focusAdapter.getItemData(position).getUserId()));
         CacheManager.getInstance().addOneHistoryEntity(historyEntity, null);
 
         launchActivity(GsyPlayerActivity.class, bundle);
-
     }
 }

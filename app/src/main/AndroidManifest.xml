@@ -37,7 +37,17 @@
 
         <service android:name=".service.KsService"/>
 
-        <activity android:name=".player.PlayerActivity"/>
+        <activity android:name=".player.view.KsPlayerActivity"
+            android:theme="@style/TranslucentTheme"/>
+
+        <activity android:name=".player.view.PlayerActivity"
+            android:theme="@style/TranslucentTheme"/>
+
+        <activity android:name=".player.view.GsyPlayerActivity"
+            android:theme="@style/TranslucentTheme"/>
+
+        <activity android:name=".history.HistoryActivity"/>
+
     </application>
 
 </manifest>

@@ -132,6 +132,16 @@ public class KsUserManager {
         return (String) loginBean.getResult().getAvatar();
     }
 
+    //提供方法，获取虚拟币值
+    public int getMoneyValue() {
+        if (loginBean.getResult().getMoney() == null) {
+            return 0;
+        }
+        return Integer.valueOf((String)loginBean.getResult().getMoney());
+    }
 
+    public void updateMoney(String money) {
+        loginBean.getResult().setMoney(money);
+    }
 
 }

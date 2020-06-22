@@ -20,4 +20,6 @@ public class KSConstant {
 
     public static final String SOCKET_TIMEOUT_ERROR_CODE = "40000";
     public static final String SOCKET_TIMEOUT_ERROR_MESSAGE = "连接超时错误";
+
+    public static final String PLAYER_VIDEO_URL = "videoUrl";
 }

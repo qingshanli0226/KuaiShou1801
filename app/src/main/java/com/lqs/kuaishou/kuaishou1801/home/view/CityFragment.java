@@ -10,28 +10,29 @@ import com.lqs.kuaishou.kuaishou1801.base.BaseRVAdapter;
 import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.HistoryEntity;
 import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
-import com.lqs.kuaishou.kuaishou1801.home.contract.HomeContract;
+import com.lqs.kuaishou.kuaishou1801.home.contract.CityContract;
+import com.lqs.kuaishou.kuaishou1801.home.mode.CityBean;
 import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;
-import com.lqs.kuaishou.kuaishou1801.home.presenter.HomePresenterImpl;
+import com.lqs.kuaishou.kuaishou1801.home.presenter.CityPresenterImpl;
 import com.lqs.kuaishou.kuaishou1801.player.view.GsyPlayerActivity;
 
-public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContract.IHomeView> implements HomeContract.IHomeView, BaseRVAdapter.IRecyclerViewItemClickListener {
-    private RecyclerView homeRv;
-    private HomeAdapter homeAdapter;
+public class CityFragment extends BaseMVPFragment<CityPresenterImpl, CityContract.ICityView> implements CityContract.ICityView, BaseRVAdapter.IRecyclerViewItemClickListener {
+    private RecyclerView cityRv;
+    private CityAdapter cityAdapter;
 
     @Override
     protected void initHttpData() {
-        ihttpPresenter.getHomeData();
+        ihttpPresenter.getCityData();
     }
 
     @Override
     protected void initPresenter() {
-        ihttpPresenter = new HomePresenterImpl();
+        ihttpPresenter = new CityPresenterImpl();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_city;
     }
 
     @Override
@@ -41,18 +42,13 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
 
     @Override
     protected void initView() {
-        homeRv = findViewById(R.id.rv);
-        homeRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        homeAdapter = new HomeAdapter();
-        homeAdapter.setiRecyclerViewItemClickListener(this);
-        homeRv.setAdapter(homeAdapter);
-    }
-
-    //返回网络请求数据
-    @Override
-    public void onHomeData(HomeBean homeBean) {
-        printLog("获取到首页数据");
-        homeAdapter.updataData(homeBean.getResult());
+        cityRv = findViewById(R.id.rv);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        cityRv.setLayoutManager(staggeredGridLayoutManager);
+        cityAdapter = new CityAdapter();
+        cityAdapter.setiRecyclerViewItemClickListener(this);
+        cityRv.setAdapter(cityAdapter);
     }
 
     @Override
@@ -73,22 +69,26 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
     @Override
     public void onItemClick(int position) {
         showMessage("你点击了第" + position + "个位置");
-        String videoUrl = KSConstant.BASE_RESOURCE_URL+homeAdapter.getItemData(position).getVedioUrl();
+        String videoUrl = KSConstant.BASE_RESOURCE_URL+ cityAdapter.getItemData(position).getVedioUrl();
         printLog(videoUrl);
 
         Bundle bundle = new Bundle();
         bundle.putString(KSConstant.PLAYER_VIDEO_URL, videoUrl);
 
-
         //添加一条历史记录
         HistoryEntity historyEntity = new HistoryEntity();
         historyEntity.setTime(System.currentTimeMillis());
-        historyEntity.setImageUrl(homeAdapter.getItemData(position).getCoverImg());
-        historyEntity.setVideoUrl(homeAdapter.getItemData(position).getVedioUrl());
-        historyEntity.setUserId(String.valueOf(homeAdapter.getItemData(position).getUserId()));
+        historyEntity.setImageUrl(cityAdapter.getItemData(position).getCoverImg());
+        historyEntity.setVideoUrl(cityAdapter.getItemData(position).getVedioUrl());
+        historyEntity.setUserId(String.valueOf(cityAdapter.getItemData(position).getUserId()));
         CacheManager.getInstance().addOneHistoryEntity(historyEntity, null);
-
         launchActivity(GsyPlayerActivity.class, bundle);
 
+    }
+
+    @Override
+    public void onCityData(CityBean cityBean) {
+        printLog("获取到同城数据");
+        cityAdapter.updataData(cityBean.getResult());
     }
 }

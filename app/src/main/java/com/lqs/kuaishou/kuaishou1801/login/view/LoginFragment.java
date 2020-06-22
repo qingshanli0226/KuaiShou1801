@@ -1,5 +1,6 @@
 package com.lqs.kuaishou.kuaishou1801.login.view;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
@@ -76,7 +77,7 @@ public class LoginFragment extends BaseMVPFragment<LoginPresenterImpl, LoginCont
         //实现跳转到MainActivity，显示HomeFragment,Activity的启动模式问题.
         getActivity().finish();//是不是一定能回到MainActivity，这个不一定，因为，MainActivity有可能被系统回收.
         KsUserManager.getInstance().setLoginBean(loginBean);//登录成功后，将登录返回的数据存储到manger中
-        launchActivity(MainActivity.class, null);
+        launchActivity(MainActivity.class, new Bundle());
     }
 
     @Override

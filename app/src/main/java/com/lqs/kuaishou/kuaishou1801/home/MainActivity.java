@@ -18,6 +18,7 @@ import com.lqs.kuaishou.kuaishou1801.base.BaseMVPActivity;
 import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessage;
 import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
+import com.lqs.kuaishou.kuaishou1801.history.HistoryActivity;
 import com.lqs.kuaishou.kuaishou1801.home.contract.LogoutContract;
 import com.lqs.kuaishou.kuaishou1801.home.mode.LogoutBean;
 import com.lqs.kuaishou.kuaishou1801.home.presenter.LogoutPresenterImpl;
@@ -77,6 +78,7 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         logoutTv = slidingMenu.getMenu().findViewById(R.id.logout);
         logoutTv.setOnClickListener(this);
         messageCountTv = slidingMenu.getMenu().findViewById(R.id.messageCount);
+        slidingMenu.getMenu().findViewById(R.id.status).setOnClickListener(this);
         messageCountTv.setText("消息:"+CacheManager.getInstance().getKsMessageCount()+"");
     }
 
@@ -106,6 +108,7 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         MainFragmentAdapter mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainFragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);//默认显示首页
     }
 
     @Override
@@ -132,6 +135,9 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
                 } else {
                     slidingMenu.showMenu();
                 }
+                break;
+            case R.id.status:
+                launchActivity(HistoryActivity.class, null);
                 break;
                 default:
                     break;

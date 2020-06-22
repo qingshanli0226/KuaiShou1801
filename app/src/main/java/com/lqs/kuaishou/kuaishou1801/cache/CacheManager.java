@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.text.TextUtils;
 
 import com.lqs.kuaishou.kuaishou1801.cache.dao.DaoMaster;
 import com.lqs.kuaishou.kuaishou1801.cache.dao.DaoSession;
+import com.lqs.kuaishou.kuaishou1801.cache.dao.HistoryEntityDao;
 import com.lqs.kuaishou.kuaishou1801.cache.dao.KsMessageDao;
+import com.lqs.kuaishou.kuaishou1801.cache.mode.HistoryEntity;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessage;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessageBean;
 import com.lqs.kuaishou.kuaishou1801.service.KsService;
@@ -32,6 +33,8 @@ public class CacheManager {
     //定义一个链表，在内存中缓存消息
     List<KsMessage> ksMessageList = new ArrayList<>();
 
+    private HistoryEntityDao historyEntityDao;
+
     private int ksMessageCount=0;
 
     private CacheManager() {
@@ -53,6 +56,7 @@ public class CacheManager {
         DaoMaster daoMaster = new DaoMaster(openHelper.getWritableDb());
         DaoSession daoSession = daoMaster.newSession();
         ksMessageDao = daoSession.getKsMessageDao();//获取操作数据库表的实例
+        historyEntityDao = daoSession.getHistoryEntityDao();
 
         //第一步从数据库中读取数据
         getKsMessageFromDb();
@@ -131,5 +135,86 @@ public class CacheManager {
 
     public interface IMessageChanged{
         void onMessageChange(List<KsMessage> ksMessageList, int ksMessageCount);
+    }
+
+    //如果数据的图片地址相同，我们就认为两个数据相等
+    private HistoryEntity getExistHistory(HistoryEntity historyEntity, List<HistoryEntity> historyEntityList) {
+        for (HistoryEntity item:historyEntityList) {
+            if (item.getImageUrl().equals(historyEntity.getImageUrl())) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    //增加一条历史记录
+    public void addOneHistoryEntity(final HistoryEntity historyEntity, final IHistoryAddCallback iHistoryAddCallback) {
+        //对数据库的操作时耗时操作
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<HistoryEntity> historyEntityList = historyEntityDao.queryBuilder().list();
+                HistoryEntity existHistoryEntity = getExistHistory(historyEntity, historyEntityList);
+                if (existHistoryEntity!=null) {//如果存在同样的数据,只是更新数据库中该条数据的时间
+                    existHistoryEntity.setTime(historyEntity.getTime());
+                    historyEntityDao.update(existHistoryEntity);
+                } else {
+                    //插入
+                    historyEntityDao.insert(historyEntity);
+                }
+                if (iHistoryAddCallback!=null) {
+                    iHistoryAddCallback.onAddOneHistoryCallback(historyEntity);
+                }
+            }
+        });
+    }
+
+    //删除一条历史记录
+    public void deleteOneHistory(final HistoryEntity historyEntity) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyEntityDao.delete(historyEntity);
+            }
+        });
+    }
+
+    //更新一条历史记录
+    public void updateOneHistory(final HistoryEntity historyEntity, final IHistoryUpdateCallback iHistoryUpdateCallback) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                historyEntityDao.update(historyEntity);
+                if (iHistoryUpdateCallback!=null) {
+                    iHistoryUpdateCallback.onUpdateOneHistoryCallback(historyEntity);
+                }
+            }
+        });
+    }
+
+    //查找历史记录
+    public void queryHistoryEntity(final IHistoryQueryCallback iHistoryQueryCallback) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<HistoryEntity> historyEntityList = historyEntityDao.queryBuilder().orderDesc(HistoryEntityDao.Properties.Time).list();
+                if (iHistoryQueryCallback!=null) {
+                    iHistoryQueryCallback.onQueryCallback(historyEntityList);
+                }
+            }
+        });
+    }
+
+    public interface IHistoryQueryCallback {
+        void onQueryCallback(List<HistoryEntity> historyEntityList);
+    }
+    public interface IHistoryAddCallback {
+        void onAddOneHistoryCallback(HistoryEntity historyEntity);
+    }
+    public interface IHistoryDeleteCallback {
+        void onDeleteOneHistoryCallback(HistoryEntity historyEntity);
+    }
+    public interface IHistoryUpdateCallback {
+        void onUpdateOneHistoryCallback(HistoryEntity historyEntity);
     }
 }
