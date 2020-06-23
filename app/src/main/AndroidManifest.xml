@@ -48,6 +48,8 @@
 
         <activity android:name=".history.HistoryActivity"/>
 
+        <activity android:name=".player.view.FocusPlayerActivity"/>
+
     </application>
 
 </manifest>

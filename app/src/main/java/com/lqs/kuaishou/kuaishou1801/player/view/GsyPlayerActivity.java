@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftContract.IGiftView> implements GiftContract.IGiftView, View.OnClickListener {
 
-    private KsGsyVideoPlayer videoPlayer;
+    private StandardGSYVideoPlayer videoPlayer;
     private String videoUrl;
 
     private GiftBean giftBean;
@@ -72,6 +72,18 @@ public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftCo
         initGiftPopupWindow();
 
         EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);//设置沙箱环境.
+
+
+        //初始化surfaceView
+        SurfaceView redS = findViewById(R.id.redS);
+        redS.setZOrderOnTop(true);//将surfaceView放在上边
+        redS.getHolder().setFormat(PixelFormat.TRANSPARENT);//背景透明色
+        redS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessage("你点击了surfaceView");
+            }
+        });
     }
 
     private void initGiftPopupWindow() {

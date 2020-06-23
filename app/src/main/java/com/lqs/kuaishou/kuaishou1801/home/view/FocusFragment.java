@@ -13,6 +13,7 @@ import com.lqs.kuaishou.kuaishou1801.common.KSConstant;
 import com.lqs.kuaishou.kuaishou1801.home.contract.FocusContract;
 import com.lqs.kuaishou.kuaishou1801.home.mode.FocusBean;
 import com.lqs.kuaishou.kuaishou1801.home.presenter.FocusPresenterImpl;
+import com.lqs.kuaishou.kuaishou1801.player.view.FocusPlayerActivity;
 import com.lqs.kuaishou.kuaishou1801.player.view.GsyPlayerActivity;
 
 public class FocusFragment extends BaseMVPFragment<FocusPresenterImpl, FocusContract.IFocusView> implements FocusContract.IFocusView, BaseRVAdapter.IRecyclerViewItemClickListener {
@@ -88,6 +89,6 @@ public class FocusFragment extends BaseMVPFragment<FocusPresenterImpl, FocusCont
         historyEntity.setUserId(String.valueOf(focusAdapter.getItemData(position).getUserId()));
         CacheManager.getInstance().addOneHistoryEntity(historyEntity, null);
 
-        launchActivity(GsyPlayerActivity.class, bundle);
+        launchActivity(FocusPlayerActivity.class, bundle);
     }
 }

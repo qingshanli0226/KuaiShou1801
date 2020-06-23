@@ -5,16 +5,11 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+    <com.lqs.kuaishou.kuaishou1801.player.view.KsGsyVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
-
-    <SurfaceView
-        android:id="@+id/redS"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
     <ImageView
@@ -26,6 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="5dp"/>
+    
 
     <ImageView
         android:id="@+id/animImg"

@@ -21,14 +21,14 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        KsMessageDao.createTable(db, ifNotExists);
         HistoryEntityDao.createTable(db, ifNotExists);
+        KsMessageDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        KsMessageDao.dropTable(db, ifExists);
         HistoryEntityDao.dropTable(db, ifExists);
+        KsMessageDao.dropTable(db, ifExists);
     }
 
     /**
@@ -47,8 +47,8 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(KsMessageDao.class);
         registerDaoClass(HistoryEntityDao.class);
+        registerDaoClass(KsMessageDao.class);
     }
 
     public DaoSession newSession() {

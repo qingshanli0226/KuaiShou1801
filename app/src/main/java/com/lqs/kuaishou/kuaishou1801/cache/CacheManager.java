@@ -170,11 +170,14 @@ public class CacheManager {
     }
 
     //删除一条历史记录
-    public void deleteOneHistory(final HistoryEntity historyEntity) {
+    public void deleteOneHistory(final HistoryEntity historyEntity, final IHistoryDeleteCallback iHistoryDeleteCallback) {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 historyEntityDao.delete(historyEntity);
+                if (iHistoryDeleteCallback!=null) {
+                    iHistoryDeleteCallback.onDeleteOneHistoryCallback(historyEntity);
+                }
             }
         });
     }
