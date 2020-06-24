@@ -27,6 +27,11 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRVAdapte
         notifyDataSetChanged();
     }
 
+    public void addOneData(T dataBean) {
+        dataList.add(dataBean);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {

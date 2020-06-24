@@ -109,6 +109,7 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         viewPager.setAdapter(mainFragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);//默认显示首页
+
     }
 
     @Override

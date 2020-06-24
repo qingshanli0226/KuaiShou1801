@@ -48,6 +48,11 @@ public class CacheManager {
         return instance;
     }
 
+    //返回线程池
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
 
 
     public void init(Context context) {

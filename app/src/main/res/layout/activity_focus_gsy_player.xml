@@ -12,11 +12,21 @@
         android:layout_centerInParent="true" />
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/commentRv"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:background="@android:color/transparent">
+    </android.support.v7.widget.RecyclerView>
+
+
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/showGift"
-        android:src="@mipmap/ksapp"
+        android:id="@+id/likeImage"
+        android:src="@mipmap/like"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
