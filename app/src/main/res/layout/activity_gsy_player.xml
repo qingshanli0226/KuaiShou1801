@@ -11,21 +11,45 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
-    <SurfaceView
-        android:id="@+id/redS"
+    <master.flame.danmaku.ui.widget.DanmakuSurfaceView
+        android:id="@+id/danmakuSurfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/userArea"/>
 
-
-    <ImageView
-        android:layout_width="50dp"
+    <LinearLayout
+        android:id="@+id/userArea"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/showGift"
-        android:src="@mipmap/ksapp"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:hint="请输入弹幕"
+            android:background="@android:color/transparent"
+            android:id="@+id/danmContentEditText"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="发送"
+            android:id="@+id/btnSend"
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:id="@+id/showGift"
+            android:src="@mipmap/ksapp"
+            />
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/animImg"

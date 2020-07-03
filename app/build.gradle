@@ -6,10 +6,14 @@ android {
     defaultConfig {
         applicationId "com.lqs.kuaishou.kuaishou1801"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
     buildTypes {
         release {
@@ -69,7 +73,13 @@ dependencies {
     implementation('com.shuyu:gsyVideoPlayer-java:6.0.3') {
         exclude group: 'com.android.support'
     }
-
     //支付宝依赖
     implementation (name: 'alipaySdk-15.5.9-20181123210601', ext: 'aar')
+
+    //集成腾讯云直播sdk
+    implementation 'com.tencent.liteavsdk:LiteAVSDK_Smart:latest.release'
+
+
+    //弹幕库导入
+    implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
 }

@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.lqs.kuaishou.kuaishou1801.AdrActivity;
+import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
+
 //定义Activity的基类，在里面定义抽象方法，抽象方法按照一定时序调用。并且在基类中定义方法，让子类复用
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -23,7 +26,23 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         initView();
         TAG = "LQS:" + getClass().getSimpleName();
+        create();
+    }
 
+    protected void create() {
+        printLog("oncreate..................");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        printLog("onStart..................");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        printLog("onStop..................");
     }
 
     //子类需要实现的抽象方法
@@ -41,7 +60,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void launchActivity(Class launcActivityClass, Bundle bundle) {
         Intent intent = new Intent();
-        intent.putExtra("param", bundle);
+        if (bundle == null) {
+            bundle = new Bundle();
+        }
+        intent.putExtras(bundle);
         intent.setClass(this, launcActivityClass);
         startActivity(intent);
     }
@@ -65,6 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void pause() {
+        printLog("onPause..................");
+        CacheManager.getInstance().saveAdrTime(System.currentTimeMillis());
     }
 
 
@@ -75,5 +99,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void resume() {
+        long pauseTime = CacheManager.getInstance().getAdrTime();
+        if (System.currentTimeMillis() - pauseTime > 5000) {
+            //弹出广告页
+            launchActivity(AdrActivity.class, null);
+        }
+        printLog("onResume..................");
     }
+
+
 }

@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -35,6 +38,16 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import java.util.Map;
 
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.Danmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuSurfaceView;
+
 public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftContract.IGiftView> implements GiftContract.IGiftView, View.OnClickListener {
 
     private StandardGSYVideoPlayer videoPlayer;
@@ -49,6 +62,10 @@ public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftCo
     private RelativeLayout rootView;
     private int addMoneyValue;
 
+    private DanmakuSurfaceView danmakuSurfaceView;
+    private DanmakuContext danmakuContext;
+    private EditText danmakuEditText;
+
     @Override
     protected void initData() {
         iHttpPresenter.getGift();
@@ -60,6 +77,7 @@ public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftCo
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         videoUrl = bundle.getString(KSConstant.PLAYER_VIDEO_URL);
+
         videoPlayer.setUp(videoUrl, true, "");
         videoPlayer.getBackButton().setVisibility(View.GONE);
 
@@ -71,20 +89,52 @@ public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftCo
 
         initGiftPopupWindow();
 
+        initDanmaku();
+
         EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);//设置沙箱环境.
+    }
 
+    //初始化弹幕view
+    private void initDanmaku() {
 
-        //初始化surfaceView
-        SurfaceView redS = findViewById(R.id.redS);
-        redS.setZOrderOnTop(true);//将surfaceView放在上边
-        redS.getHolder().setFormat(PixelFormat.TRANSPARENT);//背景透明色
-        redS.setOnClickListener(new View.OnClickListener() {
+        danmakuSurfaceView = findViewById(R.id.danmakuSurfaceView);
+        danmakuSurfaceView.setZOrderOnTop(true);//让弹幕库在播放器的上方
+        danmakuSurfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        danmakuContext = DanmakuContext.create();//创建弹幕库的上下文
+        danmakuSurfaceView.prepare(danmakuParser, danmakuContext);
+        danmakuSurfaceView.setCallback(new DrawHandler.Callback() {
             @Override
-            public void onClick(View v) {
-                showMessage("你点击了surfaceView");
+            public void prepared() {
+                //弹幕的surfaceview已经准备ok了
+                danmakuSurfaceView.start();//初始化启动弹幕库
+            }
+
+            @Override
+            public void updateTimer(DanmakuTimer timer) {
+
+            }
+
+            @Override
+            public void danmakuShown(BaseDanmaku danmaku) {
+
+            }
+
+            @Override
+            public void drawingFinished() {
+
             }
         });
+        danmakuEditText = findViewById(R.id.danmContentEditText);
+        findViewById(R.id.btnSend).setOnClickListener(this);
     }
+
+    //定义弹幕的解析器
+    private BaseDanmakuParser danmakuParser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
 
     private void initGiftPopupWindow() {
 
@@ -217,9 +267,26 @@ public class GsyPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, GiftCo
             case R.id.showGift:
                 showGiftPopupWindow();
                 break;
+            case R.id.btnSend:
+                sendOneDanmaku();
+                break;
                 default:
                     break;
         }
+    }
+
+    private void sendOneDanmaku() {
+        //该弹幕库已经把UI的渲染放到子线程了，所以我们没必要在创建子线程了
+        BaseDanmaku baseDanmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);//从左右滚动弹幕
+        String danmakuContent = danmakuEditText.getText().toString().trim();
+        baseDanmaku.text = danmakuContent;
+        baseDanmaku.textColor = Color.RED;
+        baseDanmaku.textSize = 30f;
+        baseDanmaku.textShadowColor = Color.GREEN;
+        baseDanmaku.setTime(danmakuSurfaceView.getCurrentTime()+1000);//弹幕是按照时间排序显示的
+
+        //将这条弹幕放到弹幕库中，去显示
+        danmakuSurfaceView.addDanmaku(baseDanmaku);
     }
 
     private void showGiftPopupWindow() {

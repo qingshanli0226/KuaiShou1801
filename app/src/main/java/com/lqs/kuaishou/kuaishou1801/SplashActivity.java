@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.home.MainActivity;
 
 //欢迎页面，作用，就是实现应用启动广告
@@ -22,6 +23,8 @@ public class SplashActivity extends AppCompatActivity {
         textView.setLayoutParams(layoutParams);
         textView.setTextSize(50);
         setContentView(textView);
+        CacheManager.getInstance().saveAdrTime(System.currentTimeMillis());//在这里更新存储的时间，避免主页面显示中间广告
+
 
         new Handler() {
             @Override

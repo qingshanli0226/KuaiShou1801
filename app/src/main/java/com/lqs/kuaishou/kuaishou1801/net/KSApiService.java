@@ -5,11 +5,15 @@ import com.lqs.kuaishou.kuaishou1801.home.mode.CityBean;
 import com.lqs.kuaishou.kuaishou1801.home.mode.FocusBean;
 import com.lqs.kuaishou.kuaishou1801.home.mode.HomeBean;
 import com.lqs.kuaishou.kuaishou1801.home.mode.LogoutBean;
+import com.lqs.kuaishou.kuaishou1801.live.mode.BroadcastListBean;
+import com.lqs.kuaishou.kuaishou1801.live.mode.PushRtmpBean;
 import com.lqs.kuaishou.kuaishou1801.login.mode.LoginBean;
 import com.lqs.kuaishou.kuaishou1801.login.mode.RegisterBean;
 import com.lqs.kuaishou.kuaishou1801.player.mode.GiftBean;
 import com.lqs.kuaishou.kuaishou1801.player.mode.MoneyBean;
 import com.lqs.kuaishou.kuaishou1801.player.mode.OrderInfoBean;
+import com.lqs.kuaishou.kuaishou1801.search.mode.SearchRecommendBean;
+import com.lqs.kuaishou.kuaishou1801.search.mode.SearchResultBean;
 
 import java.util.HashMap;
 
@@ -20,6 +24,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 //认为是IMode
 public interface KSApiService {
@@ -66,4 +71,18 @@ public interface KSApiService {
     @POST("getOrderInfo")
     Observable<OrderInfoBean> getOrderInfo(@Body RequestBody requestBody);
 
+
+    @GET("getRecommendVideos")
+    Observable<SearchRecommendBean> getSearchRecommend();
+
+
+    @GET("searchRecommendVideo")
+    Observable<SearchResultBean> searchRecommend(@QueryMap HashMap<String ,String> params);
+
+    //获取推流地址
+    @GET("getRtmpPushUrl")
+    Observable<PushRtmpBean> getRtmpPushUrl(@QueryMap HashMap<String,String> params);
+
+    @GET("getLiveUser")
+    Observable<BroadcastListBean> getBroadcastList();
 }

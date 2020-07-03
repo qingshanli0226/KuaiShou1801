@@ -3,11 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lqs.kuaishou.kuaishou1801">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".KsApplication"
@@ -16,7 +29,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/TranslucentTheme"
 
         >
         <activity android:name=".SplashActivity"
@@ -49,6 +63,23 @@
         <activity android:name=".history.HistoryActivity"/>
 
         <activity android:name=".player.view.FocusPlayerActivity"/>
+
+        <activity android:name=".player.view.SlidePlayerActivity"/>
+
+        <activity android:name=".player.view.LittlePlayerActivity"/>
+
+        <activity android:name=".search.view.SearchActivity"/>
+
+        <activity android:name=".record.KsRecordActivity"/>
+
+        <activity android:name=".record.TextureViewActivity"/>
+
+        <activity android:name=".live.view.UserBroadcasterActivity"/>
+
+        <activity android:name=".live.view.BroadcastListActivity"/>
+
+        <activity android:name=".live.view.TestActivity"/>
+        <activity android:name=".AdrActivity"/>
 
     </application>
 

@@ -42,14 +42,85 @@
             android:visibility="gone"
             />
 
+        <ImageView
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/search"/>
+
     </RelativeLayout>
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v4.view.ViewPager>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v4.view.ViewPager>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:scaleType="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp"
+            android:src="@mipmap/live"
+            android:id="@+id/live"/>
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            android:layout_above="@+id/live"
+            android:layout_marginBottom="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/record"
+            android:id="@+id/recordBtn"/>
+
+        <TextView
+            android:id="@+id/textureBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Texture"
+            android:layout_above="@id/recordBtn"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/liveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发起直播"
+            android:layout_above="@id/textureBtn"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/playBroadcasBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="观看直播"
+            android:layout_above="@id/liveBtn"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+
+    </RelativeLayout>
+
 
 </LinearLayout>

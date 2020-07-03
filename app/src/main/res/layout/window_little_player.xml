@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView">
+
+
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/littleGsyPlayer">
+    </com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer>
+
+    <SurfaceView
+        android:id="@+id/littleS"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/closeBtn"
+        android:src="@mipmap/share"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

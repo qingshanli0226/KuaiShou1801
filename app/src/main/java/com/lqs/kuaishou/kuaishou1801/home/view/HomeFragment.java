@@ -77,7 +77,7 @@ public class HomeFragment extends BaseMVPFragment<HomePresenterImpl, HomeContrac
         printLog(videoUrl);
 
         Bundle bundle = new Bundle();
-        bundle.putString(KSConstant.PLAYER_VIDEO_URL, videoUrl);
+        bundle.putString(KSConstant.PLAYER_VIDEO_URL, "http://vfx.mtime.cn/Video/2019/03/18/mp4/190318214226685784.mp4");
 
 
         //添加一条历史记录

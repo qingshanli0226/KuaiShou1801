@@ -5,6 +5,7 @@ package com.lqs.kuaishou.kuaishou1801.home;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,8 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.lqs.kuaishou.kuaishou1801.AdrActivity;
 import com.lqs.kuaishou.kuaishou1801.R;
-import com.lqs.kuaishou.kuaishou1801.base.BaseActivity;
 import com.lqs.kuaishou.kuaishou1801.base.BaseMVPActivity;
 import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessage;
@@ -23,9 +24,16 @@ import com.lqs.kuaishou.kuaishou1801.home.contract.LogoutContract;
 import com.lqs.kuaishou.kuaishou1801.home.mode.LogoutBean;
 import com.lqs.kuaishou.kuaishou1801.home.presenter.LogoutPresenterImpl;
 import com.lqs.kuaishou.kuaishou1801.home.view.MainFragmentAdapter;
+import com.lqs.kuaishou.kuaishou1801.live.view.BroadcastListActivity;
+import com.lqs.kuaishou.kuaishou1801.live.view.TestActivity;
+import com.lqs.kuaishou.kuaishou1801.live.view.UserBroadcasterActivity;
 import com.lqs.kuaishou.kuaishou1801.login.mode.LoginBean;
 import com.lqs.kuaishou.kuaishou1801.login.view.LoginRegisterActivity;
 import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
+import com.lqs.kuaishou.kuaishou1801.player.view.LittlePlayerActivity;
+import com.lqs.kuaishou.kuaishou1801.record.KsRecordActivity;
+import com.lqs.kuaishou.kuaishou1801.record.TextureViewActivity;
+import com.lqs.kuaishou.kuaishou1801.search.view.SearchActivity;
 
 import java.util.List;
 
@@ -62,6 +70,15 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         KsUserManager.getInstance().setLoginStatusChangeListener(this);
 
         CacheManager.getInstance().setiMessageChanged(this);
+        findViewById(R.id.live).setOnClickListener(this);
+
+
+        //将当前页面调整到最高亮度。在这里改变的亮度，只是当前页面的亮度。不会影响整个系统的亮度.
+        //如果要实现影响整个系统的亮度，那么需要在系统级应用程序中。例如设置应用。系统级应用就是手机出厂时
+        //提前安装的应用.
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = 1;//该值最大值就是1 在【0.1】之间
+        getWindow().setAttributes(layoutParams);
     }
 
     private void initSlideMenu() {
@@ -80,6 +97,11 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         messageCountTv = slidingMenu.getMenu().findViewById(R.id.messageCount);
         slidingMenu.getMenu().findViewById(R.id.status).setOnClickListener(this);
         messageCountTv.setText("消息:"+CacheManager.getInstance().getKsMessageCount()+"");
+        findViewById(R.id.searchBtn).setOnClickListener(this);
+        findViewById(R.id.recordBtn).setOnClickListener(this);
+        findViewById(R.id.textureBtn).setOnClickListener(this);
+        findViewById(R.id.liveBtn).setOnClickListener(this);
+        findViewById(R.id.playBroadcasBtn).setOnClickListener(this);
     }
 
     //根据当前用户登录状态刷新UI
@@ -139,6 +161,24 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
                 break;
             case R.id.status:
                 launchActivity(HistoryActivity.class, null);
+                break;
+            case R.id.live:
+                launchActivity(LittlePlayerActivity.class, null);
+                break;
+            case R.id.searchBtn:
+                launchActivity(SearchActivity.class,null);
+                break;
+            case R.id.recordBtn:
+                launchActivity(KsRecordActivity.class,null);
+                break;
+            case R.id.textureBtn:
+                launchActivity(TextureViewActivity.class,null);
+                break;
+            case R.id.liveBtn:
+                launchActivity(UserBroadcasterActivity.class, null);
+                break;
+            case R.id.playBroadcasBtn:
+                launchActivity(BroadcastListActivity.class,null);
                 break;
                 default:
                     break;
@@ -203,5 +243,18 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
 
             }
         });
+    }
+
+
+    @Override
+    public void resume() {
+        super.resume();
+
+
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
     }
 }

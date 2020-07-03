@@ -4,15 +4,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 
 import com.lqs.kuaishou.kuaishou1801.cache.dao.DaoMaster;
 import com.lqs.kuaishou.kuaishou1801.cache.dao.DaoSession;
 import com.lqs.kuaishou.kuaishou1801.cache.dao.HistoryEntityDao;
 import com.lqs.kuaishou.kuaishou1801.cache.dao.KsMessageDao;
+import com.lqs.kuaishou.kuaishou1801.cache.dao.SearchHistoryDao;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.HistoryEntity;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessage;
 import com.lqs.kuaishou.kuaishou1801.cache.mode.KsMessageBean;
+import com.lqs.kuaishou.kuaishou1801.cache.mode.SearchHistory;
+import com.lqs.kuaishou.kuaishou1801.search.mode.SearchRecommendBean;
 import com.lqs.kuaishou.kuaishou1801.service.KsService;
 
 import java.util.ArrayList;
@@ -27,6 +31,11 @@ public class CacheManager {
     private KsMessageDao ksMessageDao;//操作数据的表类
     private IMessageChanged iMessageChanged;
 
+    private final String ksSpName = "cacheKsSp";
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private final String adrTime = "adrTime";
+
     //使用线程池来做耗时操作
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -34,8 +43,14 @@ public class CacheManager {
     List<KsMessage> ksMessageList = new ArrayList<>();
 
     private HistoryEntityDao historyEntityDao;
+    private SearchHistoryDao searchHistoryDao;
+
+
+    private List<SearchHistory> searchHistoryList = new ArrayList<>();
 
     private int ksMessageCount=0;
+
+    private SearchRecommendBean searchRecommendBean;
 
     private CacheManager() {
 
@@ -56,12 +71,17 @@ public class CacheManager {
 
 
     public void init(Context context) {
+        //初始化sp
+        sharedPreferences = context.getSharedPreferences(ksSpName,Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         //初始化GreenDao
         DaoMaster.OpenHelper openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);//定义数据库的名字
         DaoMaster daoMaster = new DaoMaster(openHelper.getWritableDb());
         DaoSession daoSession = daoMaster.newSession();
         ksMessageDao = daoSession.getKsMessageDao();//获取操作数据库表的实例
         historyEntityDao = daoSession.getHistoryEntityDao();
+        searchHistoryDao = daoSession.getSearchHistoryDao();
 
         //第一步从数据库中读取数据
         getKsMessageFromDb();
@@ -77,6 +97,12 @@ public class CacheManager {
                 KsService ksService = ksBinder.getService();
                 //第三步从服务端获取数据.
                 ksService.getKsMessage();
+
+                //从数据库中获取历史搜索记录数据
+                ksService.getSearchHistory();
+
+                //将搜索页面的热搜榜数据获取到
+                ksService.getSearchRecommend();
             }
 
             @Override
@@ -85,6 +111,17 @@ public class CacheManager {
             }
         }, Context.BIND_AUTO_CREATE);
 
+    }
+
+    //存储页面onPause时的时间
+    public void saveAdrTime(long time) {
+        editor.putLong(adrTime, time);
+        editor.commit();
+    }
+
+    //获取广告时间,在页面onResume时读取的
+    public long getAdrTime() {
+        return sharedPreferences.getLong(adrTime, 0);
     }
 
     private void getKsMessageFromDb() {
@@ -137,6 +174,14 @@ public class CacheManager {
         this.iMessageChanged = iMessageChanged;
     }
 
+    public SearchRecommendBean getSearchRecommendBean() {
+        return searchRecommendBean;
+    }
+
+    public void setSearchRecommendBean(SearchRecommendBean searchRecommendBean) {
+        this.searchRecommendBean = searchRecommendBean;
+    }
+
 
     public interface IMessageChanged{
         void onMessageChange(List<KsMessage> ksMessageList, int ksMessageCount);
@@ -152,7 +197,7 @@ public class CacheManager {
         return null;
     }
 
-    //增加一条历史记录
+    //增加一条历史记录.该方法是异步执行的方法，调用该方法时，没必要启动子线程
     public void addOneHistoryEntity(final HistoryEntity historyEntity, final IHistoryAddCallback iHistoryAddCallback) {
         //对数据库的操作时耗时操作
         executorService.execute(new Runnable() {
@@ -224,5 +269,32 @@ public class CacheManager {
     }
     public interface IHistoryUpdateCallback {
         void onUpdateOneHistoryCallback(HistoryEntity historyEntity);
+    }
+
+
+    /*搜索页面的缓存数据操作。提供一些API，这些API,对页面和service提供操作数据库的接口， */
+    //该方法是同步执行的方法，所以在页面调用方法时，需要使用在子线程中
+    public void addOneSearchHistory(SearchHistory searchHistory) {
+        searchHistoryDao.insert(searchHistory);
+        //缓存也需要更新
+        //在第0个位置添加搜索历史记录
+        searchHistoryList.add(0,searchHistory);
+    }
+
+    public void deleteOneSearchHistory(SearchHistory searchHistory) {
+        searchHistoryDao.delete(searchHistory);
+        //需要在内存中也删除该条数据
+        searchHistoryList.remove(searchHistory);
+    }
+
+    //因为这个历史记录在应用启动时，会将数据缓存到内存中，所以该方法不要在页面中调用，只在service中异步获取的，。
+    public void querySearchHistory() {
+        List<SearchHistory> searchHistories = searchHistoryDao.queryBuilder().orderDesc(SearchHistoryDao.Properties.Time).list();
+        searchHistoryList.addAll(searchHistories);
+    }
+
+    //获取内存缓存的历史记录
+    public List<SearchHistory> getSearchHistoryList(){
+        return searchHistoryList;
     }
 }

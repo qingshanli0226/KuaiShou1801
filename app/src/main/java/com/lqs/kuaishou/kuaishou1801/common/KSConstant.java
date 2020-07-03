@@ -3,6 +3,7 @@ package com.lqs.kuaishou.kuaishou1801.common;
 public class KSConstant {
 
     public static String BASE_URL = "http://49.233.93.155:8080/";
+    //public static String BASE_URL = "http://192.168.3.4:8080/";
 
     public static String BASE_RESOURCE_URL = BASE_URL+"atguigu";
 
@@ -22,4 +23,6 @@ public class KSConstant {
     public static final String SOCKET_TIMEOUT_ERROR_MESSAGE = "连接超时错误";
 
     public static final String PLAYER_VIDEO_URL = "videoUrl";
+    public static final String PLAYER_VIDEO_LIST = "videoList";
+    public static final String PLAYER_VIDEO_POSITION = "position";
 }
