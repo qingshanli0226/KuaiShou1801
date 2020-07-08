@@ -19,5 +19,7 @@ public class SlidePlayerAdapter extends BaseRVAdapter<CityBean.ResultBean> {
         //获取ImageView
         ImageView imageView = baseViewHolder.getView(R.id.videoImage);
         Glide.with(baseViewHolder.itemView.getContext()).load(itemData.getCoverImg()).into(imageView);
+
+        //gsyPlayer播放视频
     }
 }

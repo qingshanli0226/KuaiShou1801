@@ -103,6 +103,9 @@ public class CityFragment extends BaseMVPFragment<CityPresenterImpl, CityContrac
     public void onCityData(CityBean cityBean) {
         printLog("获取到同城数据");
         cityAdapter.updataData(cityBean.getResult());
+        if (cityBean.getResult() == null || cityBean.getResult().size() == 0) {
+            return;
+        }
         beanList.addAll(cityBean.getResult());
     }
 }

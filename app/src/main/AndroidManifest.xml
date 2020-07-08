@@ -22,6 +22,21 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!-- 以下为需要的基本权限，需要自行添加至您的AndroidManifest文件中 start-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 以下为需要的基本权限，需要自行添加至您的AndroidManifest文件中 end-->
+
     <application
         android:name=".KsApplication"
         android:allowBackup="true"
@@ -43,7 +58,6 @@
         </activity>
 
         <activity android:name=".home.MainActivity"
-            android:theme="@style/TranslucentTheme"
             android:launchMode="singleTask"/>
 
         <activity android:name=".login.view.LoginRegisterActivity"
@@ -80,6 +94,37 @@
 
         <activity android:name=".live.view.TestActivity"/>
         <activity android:name=".AdrActivity"/>
+
+
+        <!--友盟分享start-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            tools:replace="android:configChanges"/>
+        <provider
+            android:authorities="com.lqs.kuaishou.kuaishou1801.fileprovider"
+        android:name="android.support.v4.content.FileProvider"
+        android:exported="false"
+        android:grantUriPermissions="true"
+        >
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths"/>
+    </provider>
+    <!--友盟分享end-->
+
 
     </application>
 

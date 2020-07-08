@@ -14,9 +14,12 @@ import java.util.List;
 //定义一个万能适配器，可以适配不同类型的数据，又能适配不同ItemView
 public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRVAdapter.BaseViewHolder> {
     private IRecyclerViewItemClickListener iRecyclerViewItemClickListener;
-    private List<T> dataList = new ArrayList<>();
+    private ArrayList<T> dataList = new ArrayList<>();
 
     public void updataData(List<T> datas) {
+        if (datas== null || datas.size() == 0) {
+            return;
+        }
         dataList.clear();
         dataList.addAll(datas);
         notifyDataSetChanged();

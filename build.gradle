@@ -5,6 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+
+        //友盟
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
@@ -22,11 +25,14 @@ allprojects {
         google()
         jcenter()
 
-
         // 支付宝 SDK AAR 包所需的配置
         flatDir {
             dirs 'libs'
         }
+
+        //友盟
+        mavenCentral()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 

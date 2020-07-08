@@ -136,7 +136,7 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
 
     @Override
     protected void initData() {
-
+        iHttpPresenter.getWeekVideoList("http://www.city2sky.cn/api/WeekTest/getVideoPaths");
     }
 
 
@@ -217,6 +217,11 @@ public class MainActivity extends BaseMVPActivity<LogoutPresenterImpl, LogoutCon
         //缓存的处理
         //1,改变当前应用程序的在内存中的登录状态，登录状态，由已登录状态，变为未登录状态   2,把token清除，禁止下次应用程序冷启动时实现自动登录
         KsUserManager.getInstance().processLogout();
+    }
+
+    @Override
+    public void onWeekVideo(List<String> weekVideoList) {
+        showMessage(weekVideoList.size()+"");
     }
 
     @Override

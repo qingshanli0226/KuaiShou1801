@@ -16,6 +16,7 @@ import com.lqs.kuaishou.kuaishou1801.search.mode.SearchRecommendBean;
 import com.lqs.kuaishou.kuaishou1801.search.mode.SearchResultBean;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -25,6 +26,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 //认为是IMode
 public interface KSApiService {
@@ -85,4 +87,8 @@ public interface KSApiService {
 
     @GET("getLiveUser")
     Observable<BroadcastListBean> getBroadcastList();
+
+
+    @GET
+    Observable<List<String>> getWeekTestVideo(@Url String url);
 }

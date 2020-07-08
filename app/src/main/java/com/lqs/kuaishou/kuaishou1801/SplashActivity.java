@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.lqs.kuaishou.kuaishou1801.cache.CacheManager;
 import com.lqs.kuaishou.kuaishou1801.home.MainActivity;
+import com.lqs.kuaishou.kuaishou1801.manager.KsUserManager;
+import com.lqs.kuaishou.kuaishou1801.message.MessageManager;
 
 //欢迎页面，作用，就是实现应用启动广告
 public class SplashActivity extends AppCompatActivity {
@@ -23,6 +25,12 @@ public class SplashActivity extends AppCompatActivity {
         textView.setLayoutParams(layoutParams);
         textView.setTextSize(50);
         setContentView(textView);
+
+        KsUserManager.getInstance().init(KsApplication.instance);
+        CacheManager.getInstance().init(KsApplication.instance);
+        MessageManager.getInstance().init(KsApplication.instance);
+
+
         CacheManager.getInstance().saveAdrTime(System.currentTimeMillis());//在这里更新存储的时间，避免主页面显示中间广告
 
 

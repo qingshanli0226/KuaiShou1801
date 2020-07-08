@@ -139,7 +139,7 @@ public class FocusPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, Gift
         pathMeasure = new PathMeasure(path, false);
         //使用属性动画，来产生组合动画，其中有平移，缩放，透明
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, pathMeasure.getLength());
-        valueAnimator.setDuration(10000);//持续5秒钟
+        valueAnimator.setDuration(1000);//持续5秒钟
 
         //动画执行时，该回调一直被被调用，直到动画运行结石手术。
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -153,7 +153,7 @@ public class FocusPlayerActivity extends BaseMVPActivity<GiftPresenterImpl, Gift
                 //获取当前动画播放时间
                 long time = valueAnimator.getCurrentPlayTime();
                 //可以计算出当前动画播放的百分比
-                float percent = (float) (time/10000.0);
+                float percent = (float) (time/1000.0);
                 likeAnimImage.setScaleX(percent*2);
                 likeAnimImage.setScaleY(percent*2);//根据这个百分比，将动画图片，逐渐变大，直到变为1为止
                 likeAnimImage.setAlpha(1-percent);//开始动画图片是原色，动画结束时，动画图片变为透明

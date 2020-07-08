@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/commentRv"
         android:layout_width="300dp"

@@ -4,6 +4,8 @@ import com.lqs.kuaishou.kuaishou1801.home.contract.LogoutContract;
 import com.lqs.kuaishou.kuaishou1801.home.mode.LogoutBean;
 import com.lqs.kuaishou.kuaishou1801.net.RetroCreator;
 
+import java.util.List;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -30,6 +32,34 @@ public class LogoutPresenterImpl extends LogoutContract.LogoutPresenter {
                             iHttpView.onLogout(logoutBean);
                         }
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getWeekVideoList(String url) {
+        RetroCreator.getKSApiServie().getWeekTestVideo(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<String> strings) {
+                        iHttpView.onWeekVideo(strings);
                     }
 
                     @Override

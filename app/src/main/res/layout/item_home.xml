@@ -4,10 +4,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/homeImg"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/homeImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:id="@+id/btnShare"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/share"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
 
 </LinearLayout>

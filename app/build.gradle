@@ -15,12 +15,22 @@ android {
             abiFilters "armeabi", "armeabi-v7a"
         }
     }
+    //友盟分享需要添加的开始
     buildTypes {
+        debug {
+            manifestPlaceholders = [
+                    qqappid: ""
+            ]
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true//将该值改成true代表着我们的release正式版本将会使用混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [
+                    qqappid: ""
+            ]
         }
     }
+    //友盟分享的结束
 
     //第四步，配置greenDao生成文件的目录
     greendao {
@@ -82,4 +92,25 @@ dependencies {
 
     //弹幕库导入
     implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
+
+
+    //友盟推送
+    //配置友盟退推送
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    implementation 'com.umeng.umsdk:common:2.2.5'
+//PushSDK必须依赖utdid库，所以需要加入对应依赖。支付宝aar已经引入该库，此处可以注掉.
+    //implementation 'com.umeng.umsdk:utdid:1.1.5.3'
+//PushSDK
+    implementation 'com.umeng.umsdk:push:6.0.1'
+
+    //友盟分享
+    implementation  'com.umeng.umsdk:share-core:7.0.2'
+    implementation  'com.umeng.umsdk:share-board:7.0.2'
+    implementation  'com.umeng.umsdk:share-qq:7.0.2'
+    implementation  'com.umeng.umsdk:share-wx:7.0.2'
+    implementation  'com.umeng.umsdk:share-sina:7.0.2'
+    implementation  'com.umeng.umsdk:share-alipay:7.0.2'
+    implementation  'com.umeng.umsdk:share-dingding:7.0.2'
+    //友盟统计
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
 }
